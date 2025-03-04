@@ -1,4 +1,4 @@
-import documentCode from "./DocumentCode.js";
+import documentCode from "../DocumentCode.js";
 
 export const createDocumentService = async (document) => {
   const createDocument = await documentCode.create(document);
