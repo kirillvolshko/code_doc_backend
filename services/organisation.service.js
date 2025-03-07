@@ -50,3 +50,12 @@ export const createOrganisationService = async (body) => {
   );
   return createOrganisation;
 };
+
+export const deleteOrganisationService = async (id) => {
+  await db.query(`DELETE FROM user_organisations where org_id=$1`, [id]);
+  const deleteOrganisation = await db.query(
+    `DELETE FROM organisation where id=$1`,
+    [id]
+  );
+  return deleteOrganisation;
+};
