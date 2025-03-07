@@ -1,17 +1,16 @@
 import Router from "express";
 import {
   createDocument,
+  deleteDocument,
   getDocument,
-  getDocumentById,
-  patchDocument,
-  deleteDocumentById,
-} from "./documentController.js";
-const router = new Router();
+  updateDocument,
+} from "../controller/documents.controller.js";
 
-router.post("/documents-code", createDocument);
-router.get("/documents-code", getDocument);
-router.get("/documents-code/:id", getDocumentById);
-router.patch("/documents-code/:id", patchDocument);
-router.delete("/documents-code/:id", deleteDocumentById);
+const routerDoc = new Router();
 
-export default router;
+routerDoc.get("/documents-code/:id", getDocument);
+routerDoc.post("/documents-code", createDocument);
+routerDoc.patch("/documents-code/:id", updateDocument);
+routerDoc.delete("/documents-code/:id", deleteDocument);
+
+export default routerDoc;

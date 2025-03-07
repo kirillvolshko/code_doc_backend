@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import routerUser from "./routes/user.routes.js";
 import routerOrg from "./routes/organisation.routes.js";
+import routerDoc from "./routes/documents.routes.js";
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
@@ -11,6 +12,7 @@ app.use(express.json());
 
 app.use("/api", routerUser);
 app.use("/api", routerOrg);
+app.use("/api", routerDoc);
 
 async function startApp() {
   try {
