@@ -1,5 +1,9 @@
 import { Router } from "express";
-import { createUser } from "../controller/user.controller.js";
+import {
+  createUser,
+  loginUser,
+  logoutUser,
+} from "../controller/user.controller.js";
 import { body } from "express-validator";
 
 const routerUser = new Router();
@@ -9,8 +13,8 @@ routerUser.post(
   body("password").isLength({ min: 3, max: 32 }),
   createUser
 );
-routerUser.post("/login");
-routerUser.post("/logout");
+routerUser.post("/login", loginUser);
+routerUser.post("/logout", logoutUser);
 routerUser.get("/refresh");
 routerUser.get("/users");
 
