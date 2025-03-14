@@ -1,6 +1,12 @@
 import bcrypt from "bcrypt";
 import { userDto } from "../dtos/user-dto.js";
-import { generateTokent, saveToken, removeToken } from "./token.service.js";
+import {
+  generateTokent,
+  saveToken,
+  removeToken,
+  validateRefreshToken,
+  findToken,
+} from "./token.service.js";
 import ApiError from "../exceptions/api-error.js";
 import { User } from "../entities/User.js";
 import { AppDataSource } from "../config/data-source.js";
@@ -65,4 +71,25 @@ export const logoutUserService = async (refreshToken) => {
   const token = await removeToken(refreshToken);
   console.log(token);
   return token;
+};
+
+export const refreshUserService = async (refreshToken) => {
+  if (!refreshToken) {
+    throw ApiError.UnauthorizesError();
+  }
+  const userData = await validateRefreshToken(refreshToken);
+  const tokenFromDb = await findToken(refreshToken);
+  if (!userData || tokenFromDb) {
+    throw ApiError.UnauthorizesError();
+  }
+  const user = await userRepository.findOneBy({ id: userData.id });
+  const userDtoInstance = userDto(user);
+  const tokens = await generateTokent(userDtoInstance);
+
+  await saveToken(userDtoInstance.id, tokens.refreshToken);
+
+  return {
+    ...tokens,
+    user: userDtoInstance,
+  };
 };

@@ -37,3 +37,25 @@ export const removeToken = async (refreshToken) => {
   const tokenData = tokenRepository.delete({ refreshtoken: refreshToken });
   return tokenData;
 };
+
+export const findToken = async (refreshToken) => {
+  const tokenData = tokenRepository.findOneBy({ refreshtoken: refreshToken });
+  return tokenData;
+};
+
+export const validateAccessToken = async (token) => {
+  try {
+    const userData = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+    return userData;
+  } catch (error) {
+    return null;
+  }
+};
+export const validateRefreshToken = async (token) => {
+  try {
+    const userData = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+    return userData;
+  } catch (error) {
+    return null;
+  }
+};

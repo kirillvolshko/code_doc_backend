@@ -3,6 +3,7 @@ import {
   createUser,
   loginUser,
   logoutUser,
+  refreshUser,
 } from "../controller/user.controller.js";
 import { body } from "express-validator";
 
@@ -15,7 +16,6 @@ routerUser.post(
 );
 routerUser.post("/login", loginUser);
 routerUser.post("/logout", logoutUser);
-routerUser.get("/refresh");
-routerUser.get("/users");
+routerUser.get("/refresh", refreshUser);
 
 export default routerUser;
