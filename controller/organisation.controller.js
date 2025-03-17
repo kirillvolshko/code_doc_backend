@@ -49,7 +49,6 @@ export const createOrganisation = async (req, res) => {
 
 export const deleteOrganisation = async (req, res) => {
   try {
-    console.log(req.params.id);
     const deleteOrganisation = await deleteOrganisationService(req.params.id);
 
     if (deleteOrganisation) res.status(200).json("Delete organisation succes");

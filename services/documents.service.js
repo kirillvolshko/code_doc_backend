@@ -1,33 +1,30 @@
+import { AppDataSource } from "../config/data-source.js";
 import db from "../config/db.js";
+import { Document } from "../entities/Documents.js";
+import { User } from "../entities/User.js";
+import ApiError from "../exceptions/api-error.js";
+import { documentDto } from "../dtos/document-dto.js";
+import { creatorDto } from "../dtos/user-dto.js";
+
+const documentRepository = AppDataSource.getRepository(Document);
+const userRepository = AppDataSource.getRepository(User);
 
 export const getDocumentsService = async (id) => {
-  const getDocument = await db.query(
-    `SELECT 
-       code_document.*, 
-       users.id AS user_id, 
-       users.name, 
-       users.email
-     FROM 
-       code_document
-     JOIN 
-       users ON code_document.creator_id = users.id
-     WHERE 
-       code_document.id = $1`,
-    [id]
-  );
-  const document = getDocument.rows[0];
-  return {
-    id: document.id,
-    title: document.title,
-    content: document.content,
-    creator: {
-      id: document.user_id,
-      name: document.name,
-      email: document.email,
-    },
-    created_at: document.created_at,
-    updated_at: document.updated_at,
-  };
+  const getDocument = await documentRepository.findOneBy({ org_id: id });
+
+  if (!getDocument) {
+    throw ApiError.BadRequest("No documents in this org");
+  }
+
+  const getUser = await userRepository.findOneBy({
+    id: getDocument.creator_id,
+  });
+
+  const userDtoInstance = await creatorDto(getUser);
+
+  const document = await documentDto(getDocument, userDtoInstance);
+
+  return [document];
 };
 
 export const createDocumentService = async (body) => {

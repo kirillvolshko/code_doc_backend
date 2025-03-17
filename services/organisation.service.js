@@ -40,23 +40,26 @@ export const deleteUserFromOrganisationService = async (body) => {
 
 export const createOrganisationService = async (body) => {
   const { name, creator_id } = body;
-  const createOrganisation = await db.query(
-    `INSERT INTO organisation(name, creator_id) values ($1, $2) RETURNING *`,
-    [name, creator_id]
-  );
-  const org_id = createOrganisation.rows[0].id;
-  await db.query(
-    `INSERT INTO user_organisations( org_id, user_id) VALUES ($1, $2)`,
-    [org_id, creator_id]
-  );
+
+  const createOrganisation = orgRepository.create({
+    name: name,
+    creator_id: creator_id,
+  });
+  await orgRepository.save(createOrganisation);
+
+  const org_id = createOrganisation.id;
+
+  const addToUserOrg = userOrgRepository.create({
+    org_id: org_id,
+    user_id: creator_id,
+  });
+  await userOrgRepository.save(addToUserOrg);
+
   return createOrganisation;
 };
 
 export const deleteOrganisationService = async (id) => {
-  await db.query(`DELETE FROM user_organisations where org_id=$1`, [id]);
-  const deleteOrganisation = await db.query(
-    `DELETE FROM organisation where id=$1`,
-    [id]
-  );
+  await userOrgRepository.delete({ org_id: id });
+  const deleteOrganisation = await orgRepository.delete(id);
   return deleteOrganisation;
 };
