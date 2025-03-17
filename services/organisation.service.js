@@ -1,39 +1,40 @@
 import db from "../config/db.js";
+import { AppDataSource } from "../config/data-source.js";
+import { Organisation } from "../entities/Organisation.js";
+import { UserOrganisations } from "../entities/UsersOrgs.js";
+import ApiError from "../exceptions/api-error.js";
+
+const orgRepository = AppDataSource.getRepository(Organisation);
+const userOrgRepository = AppDataSource.getRepository(UserOrganisations);
 
 export const getOrganisationByUserService = async (id) => {
-  const userOrgs = await db.query(
-    `SELECT * FROM user_organisations WHERE user_id = $1`,
-    [id]
-  );
-
-  if (userOrgs.rows.length === 0) {
-    throw new Error("Id user error");
+  const userOrgs = await userOrgRepository.findBy({ user_id: id });
+  if (!userOrgs) {
+    throw ApiError.BadRequest("Id user error");
   }
-  const orgIds = userOrgs.rows.map((org) => org.org_id);
-  const organisations = await db.query(
-    `SELECT * FROM organisation WHERE id = ANY($1)`,
-    [orgIds]
-  );
+  const orgIds = userOrgs.map((org) => org.o);
 
-  return organisations.rows;
+  const organisations = await orgRepository.find({ id: orgIds });
+
+  return organisations;
 };
 
 export const addUserToOrganisationService = async (body) => {
   const { user_id, org_id } = body;
-  const addUserToOrganisation = await db.query(
-    `INSERT INTO user_organisations(org_id, user_id) VALUES ($1, $2)`,
-    [org_id, user_id]
-  );
-
+  const addUserToOrganisation = userOrgRepository.create({
+    org_id: org_id,
+    user_id: user_id,
+  });
+  await userOrgRepository.save(addUserToOrganisation);
   return addUserToOrganisation;
 };
 
 export const deleteUserFromOrganisationService = async (body) => {
-  const { user_id, org_id } = body;
-  const deleteUserFromOrganisation = await db.query(
-    `DELETE FROM user_organisations where org_id=$1 AND user_id=$2`,
-    [org_id, user_id]
-  );
+  const { user_id } = body;
+  const deleteUserFromOrganisation = await userOrgRepository.delete({
+    user_id: user_id,
+  });
+
   return deleteUserFromOrganisation;
 };
 
