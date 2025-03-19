@@ -29,11 +29,14 @@ export const getDocumentsService = async (id) => {
 
 export const createDocumentService = async (body) => {
   const { title, content, creator_id, org_id } = body;
-  const createDocument = await db.query(
-    `INSERT INTO code_document(title, content, creator_id, org_id) values ($1, $2, $3, $4)`,
-    [title, content, creator_id, org_id]
-  );
-  return createDocument;
+  const createDocument = documentRepository.create({
+    title: title,
+    content: content,
+    creator_id: creator_id,
+    org_id: org_id,
+  });
+  const saveDocument = documentRepository.save(createDocument);
+  return saveDocument;
 };
 
 export const updateDocumentService = async (body, id) => {
