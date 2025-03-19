@@ -42,18 +42,25 @@ export const createDocumentService = async (body) => {
 export const updateDocumentService = async (body, id) => {
   const { title, content, updated_id } = body;
   const updatedAt = new Date();
-
-  const updateDocument = await userRepository.update(id, {
+  const findDocument = await documentRepository.findOneBy({ id: id });
+  if (!findDocument) {
+    throw ApiError.BadRequest("Dont have document with this id");
+  }
+  const updateDocument = documentRepository.update(id, {
     title: title,
     content: content,
     updated_id: updated_id,
-    update_at: updatedAt,
+    updated_at: updatedAt,
   });
 
   return updateDocument;
 };
 
 export const deleteDocumentService = async (id) => {
-  const deleteDocument = await userRepository.delete(id);
+  const findDocument = await documentRepository.findOneBy({ id: id });
+  if (!findDocument) {
+    throw ApiError.BadRequest("Dont have document with this id");
+  }
+  const deleteDocument = await documentRepository.delete({ id: id });
   return deleteDocument;
 };
