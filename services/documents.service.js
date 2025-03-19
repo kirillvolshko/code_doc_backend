@@ -42,21 +42,18 @@ export const createDocumentService = async (body) => {
 export const updateDocumentService = async (body, id) => {
   const { title, content, updated_id } = body;
   const updatedAt = new Date();
-  const updateDocument = await db.query(
-    `UPDATE code_document set title = $1, 
-         content = $2, 
-         updated_id = $3, 
-         updated_at = $4 
-     WHERE id = $5 `,
-    [title, content, updated_id, updatedAt, id]
-  );
+
+  const updateDocument = await userRepository.update(id, {
+    title: title,
+    content: content,
+    updated_id: updated_id,
+    update_at: updatedAt,
+  });
+
   return updateDocument;
 };
 
 export const deleteDocumentService = async (id) => {
-  const deleteDocument = await db.query(
-    `DELETE FROM code_document where id=$1`,
-    [id]
-  );
+  const deleteDocument = await userRepository.delete(id);
   return deleteDocument;
 };
