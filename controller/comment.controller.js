@@ -1,5 +1,6 @@
 import {
   createCommentService,
+  deleteCommentService,
   getCommentService,
   updateCommentService,
 } from "../services/comment.service.js";
@@ -33,6 +34,8 @@ export const createComment = async (req, res) => {
   }
 };
 export const deleteComment = async (req, res) => {
+  const deleteComment = await deleteCommentService(req.params.id);
+  if (deleteComment) res.status(200).json("Delete comment success");
   try {
   } catch (error) {
     res.status(500).json(error);

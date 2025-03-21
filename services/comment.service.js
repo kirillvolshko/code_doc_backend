@@ -63,3 +63,8 @@ export const updateCommentService = async (body, id) => {
   console.log(updateComment);
   return updateComment;
 };
+
+export const deleteCommentService = async (id) => {
+  const deleteComment = await commentRepository.delete(id);
+  return deleteComment;
+};
