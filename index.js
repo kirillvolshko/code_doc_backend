@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import errorMiddleware from "./middlewares/error-middleware.js";
 import { AppDataSource } from "./config/data-source.js";
+import routerComment from "./routes/comment.routes.js";
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use(cors());
 app.use("/api", routerUser);
 app.use("/api", routerOrg);
 app.use("/api", routerDoc);
+app.use("/api", routerComment);
 app.use(errorMiddleware);
 
 AppDataSource.initialize();
