@@ -45,3 +45,21 @@ export const createCommentService = async (body) => {
 
   return saveComment;
 };
+
+export const updateCommentService = async (body, id) => {
+  const { creator_id, content, doc_id } = body;
+  console.log(body);
+  console.log(id);
+  const findComment = await commentRepository.findOneBy({ id: id });
+  if (!findComment) {
+    throw ApiError.BadRequest("Dont find this comment by id");
+  }
+
+  const updateComment = commentRepository.update(id, {
+    creator_id: creator_id,
+    content: content,
+    doc_id: doc_id,
+  });
+  console.log(updateComment);
+  return updateComment;
+};
