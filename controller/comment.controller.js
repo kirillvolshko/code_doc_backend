@@ -1,6 +1,11 @@
-import { createCommentService } from "../services/comment.service.js";
+import {
+  createCommentService,
+  getCommentService,
+} from "../services/comment.service.js";
 
 export const getComment = async (req, res) => {
+  const getComment = await getCommentService(req.params.id);
+  if (getComment) res.status(200).json(getComment);
   try {
   } catch (error) {
     res.status(500).json(error);

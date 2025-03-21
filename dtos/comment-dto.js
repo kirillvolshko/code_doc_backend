@@ -1,4 +1,4 @@
-export const documentDto = (comment, user) => {
+export const commentDto = (comment, user) => {
   return {
     id: comment.id,
     content: comment.content,
