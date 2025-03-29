@@ -56,11 +56,11 @@ export const refreshUser = async (req, res, next) => {
   try {
     const { refreshToken } = req.cookies;
     const user = await refreshUserService(refreshToken);
-    res.cookie("refreshToken", loginUser.refreshToken, {
+    res.cookie("refreshToken", user.refreshToken, {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       httpOnly: true,
     });
-    return res.status(200).json(loginUser);
+    return res.status(200).json(user);
   } catch (error) {
     next(error);
   }

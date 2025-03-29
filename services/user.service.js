@@ -11,9 +11,11 @@ import ApiError from "../exceptions/api-error.js";
 import { User } from "../entities/User.js";
 import { AppDataSource } from "../config/data-source.js";
 
+const userRepository = AppDataSource.getRepository(User);
+
 export const createUserService = async (body) => {
   const { name, email, password } = body;
-  const userRepository = AppDataSource.getRepository(User);
+
   const user = await userRepository.findOneBy({ email: email });
 
   if (user) {
@@ -43,7 +45,6 @@ export const createUserService = async (body) => {
 };
 
 export const loginUserService = async (body) => {
-  const userRepository = AppDataSource.getRepository(User);
   const { email, password } = body;
 
   const user = await userRepository.findOneBy({ email: email });
@@ -79,7 +80,8 @@ export const refreshUserService = async (refreshToken) => {
   }
   const userData = await validateRefreshToken(refreshToken);
   const tokenFromDb = await findToken(refreshToken);
-  if (!userData || tokenFromDb) {
+
+  if (!userData || !tokenFromDb) {
     throw ApiError.UnauthorizesError();
   }
   const user = await userRepository.findOneBy({ id: userData.id });
