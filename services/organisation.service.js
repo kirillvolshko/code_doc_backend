@@ -3,19 +3,21 @@ import { AppDataSource } from "../config/data-source.js";
 import { Organisation } from "../entities/Organisation.js";
 import { UserOrganisations } from "../entities/UsersOrgs.js";
 import ApiError from "../exceptions/api-error.js";
+import { In } from "typeorm";
 
 const orgRepository = AppDataSource.getRepository(Organisation);
 const userOrgRepository = AppDataSource.getRepository(UserOrganisations);
 
 export const getOrganisationByUserService = async (id) => {
   const userOrgs = await userOrgRepository.findBy({ user_id: id });
+  console.log(userOrgs);
   if (!userOrgs) {
     throw ApiError.BadRequest("Id user error");
   }
-  const orgIds = userOrgs.map((org) => org.o);
-
-  const organisations = await orgRepository.find({ id: orgIds });
-
+  const orgIds = userOrgs.map((org) => org.org_id);
+  console.log(orgIds);
+  const organisations = await orgRepository.findBy({ id: In(orgIds) });
+  console.log(organisations);
   return organisations;
 };
 
