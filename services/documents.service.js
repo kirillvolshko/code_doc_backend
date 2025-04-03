@@ -5,26 +5,40 @@ import { User } from "../entities/User.js";
 import ApiError from "../exceptions/api-error.js";
 import { documentDto } from "../dtos/document-dto.js";
 import { creatorDto } from "../dtos/user-dto.js";
+import { In } from "typeorm";
 
 const documentRepository = AppDataSource.getRepository(Document);
 const userRepository = AppDataSource.getRepository(User);
 
 export const getDocumentsService = async (id) => {
-  const getDocument = await documentRepository.findOneBy({ org_id: id });
-
+  const getDocument = await documentRepository.findBy({ org_id: id });
   if (!getDocument) {
     throw ApiError.BadRequest("No documents in this org");
   }
-
-  const getUser = await userRepository.findOneBy({
-    id: getDocument.creator_id,
+  const documents = getDocument.map((item) => item.creator_id);
+  const getUser = await userRepository.findBy({
+    id: In(documents),
+  });
+  const userDtoInstance = await getUser.map((item) => creatorDto(item));
+  const document = getDocument.map((doc) => {
+    const creator = userDtoInstance.find((user) => user.id === doc.creator_id);
+    return documentDto(doc, creator);
   });
 
+  return document;
+};
+
+export const getDocumentByIdService = async (id) => {
+  const getDocument = await documentRepository.findOneBy({ id: id });
+  if (!getDocument) {
+    throw ApiError.BadRequest("Error in id");
+  }
+  const getUser = await userRepository.findBy({
+    id: getDocument.creator_id,
+  });
   const userDtoInstance = await creatorDto(getUser);
-
   const document = await documentDto(getDocument, userDtoInstance);
-
-  return [document];
+  return document;
 };
 
 export const createDocumentService = async (body) => {

@@ -7,6 +7,7 @@ export const documentDto = (documentModel, user) => {
       id: user.id,
       name: user.name,
     },
+    org_id: documentModel.org_id,
     created_at: documentModel.created_at,
     updated_at: documentModel.updated_at,
     updated_id: documentModel.updated_id,
