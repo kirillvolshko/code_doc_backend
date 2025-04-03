@@ -13,3 +13,10 @@ export const documentDto = (documentModel, user) => {
     updated_id: documentModel.updated_id,
   };
 };
+
+export const documentsDto = (documentModel) => {
+  return {
+    id: documentModel.id,
+    title: documentModel.title,
+  };
+};
