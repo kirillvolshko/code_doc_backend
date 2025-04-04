@@ -22,15 +22,30 @@ export const getDocumentsService = async (id) => {
 };
 
 export const getDocumentByIdService = async (id) => {
-  const getDocument = await documentRepository.findOneBy({ id: id });
+  const getDocument = await documentRepository.findOneBy({ id });
   if (!getDocument) {
     throw ApiError.BadRequest("Error in id");
   }
+
   const getUser = await userRepository.findOneBy({
     id: getDocument.creator_id,
   });
+
+  let editor = null;
+
+  if (getDocument.updated_id) {
+    const editorUser = await userRepository.findOneBy({
+      id: getDocument.updated_id,
+    });
+
+    if (editorUser) {
+      editor = await creatorDto(editorUser);
+    }
+  }
+
   const userDtoInstance = await creatorDto(getUser);
-  const document = await documentDto(getDocument, userDtoInstance);
+  const document = await documentDto(getDocument, userDtoInstance, editor);
+
   return document;
 };
 

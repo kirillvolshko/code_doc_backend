@@ -1,4 +1,4 @@
-export const documentDto = (documentModel, user) => {
+export const documentDto = (documentModel, user, editor) => {
   return {
     id: documentModel.id,
     title: documentModel.title,
@@ -10,7 +10,7 @@ export const documentDto = (documentModel, user) => {
     org_id: documentModel.org_id,
     created_at: documentModel.created_at,
     updated_at: documentModel.updated_at,
-    updated_id: documentModel.updated_id,
+    editor: editor ? { id: editor.id, name: editor.name } : null,
   };
 };
 

@@ -12,8 +12,8 @@ const routerDoc = new Router();
 
 routerDoc.get("/documents-code/:id", authMiddleware, getDocuments);
 routerDoc.get("/document-code/:id", authMiddleware, getDocumentById);
-routerDoc.post("/documents-code", authMiddleware, createDocument);
-routerDoc.patch("/documents-code/:id", authMiddleware, updateDocument);
-routerDoc.delete("/documents-code/:id", authMiddleware, deleteDocument);
+routerDoc.post("/document-code", authMiddleware, createDocument);
+routerDoc.patch("/document-code/:id", authMiddleware, updateDocument);
+routerDoc.delete("/document-code/:id", authMiddleware, deleteDocument);
 
 export default routerDoc;
