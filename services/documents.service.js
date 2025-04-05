@@ -1,17 +1,15 @@
 import { AppDataSource } from "../config/data-source.js";
-import db from "../config/db.js";
 import { Document } from "../entities/Documents.js";
 import { User } from "../entities/User.js";
 import ApiError from "../exceptions/api-error.js";
 import { documentDto, documentsDto } from "../dtos/document-dto.js";
 import { creatorDto } from "../dtos/user-dto.js";
-import { In } from "typeorm";
 
 const documentRepository = AppDataSource.getRepository(Document);
 const userRepository = AppDataSource.getRepository(User);
 
 export const getDocumentsService = async (id) => {
-  const getDocument = await documentRepository.findBy({ org_id: id });
+  const getDocument = await documentRepository.findBy({ project_id: id });
   if (!getDocument) {
     throw ApiError.BadRequest("No documents in this org");
   }
@@ -50,12 +48,12 @@ export const getDocumentByIdService = async (id) => {
 };
 
 export const createDocumentService = async (body) => {
-  const { title, content, creator_id, org_id } = body;
+  const { title, content, creator_id, project_id } = body;
   const createDocument = documentRepository.create({
     title: title,
     content: content,
     creator_id: creator_id,
-    org_id: org_id,
+    project_id: project_id,
   });
   const saveDocument = documentRepository.save(createDocument);
   return saveDocument;
@@ -88,7 +86,7 @@ export const deleteDocumentService = async (id) => {
 };
 
 // export const getDocumentsService = async (id) => {
-//   const getDocument = await documentRepository.findBy({ org_id: id });
+//   const getDocument = await documentRepository.findBy({ project_id: id });
 //   if (!getDocument) {
 //     throw ApiError.BadRequest("No documents in this org");
 //   }

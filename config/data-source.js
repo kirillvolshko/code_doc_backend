@@ -2,9 +2,9 @@ import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { User } from "../entities/User.js";
 import { Token } from "../entities/Token.js";
-import { Organisation } from "../entities/Organisation.js";
+import { Project } from "../entities/Project.js";
 import { Document } from "../entities/Documents.js";
-import { UserOrganisations } from "../entities/UsersOrgs.js";
+import { UserProjects } from "../entities/UserProjects.js";
 import { Comment } from "../entities/Comments.js";
 
 export const AppDataSource = new DataSource({
@@ -14,7 +14,7 @@ export const AppDataSource = new DataSource({
   username: process.env.LOGIN,
   password: process.env.PASSWORD,
   database: "code_doc",
-  entities: [User, Token, Organisation, Document, UserOrganisations, Comment],
+  entities: [User, Token, Project, Document, UserProjects, Comment],
   synchronize: false,
   logging: true,
 });

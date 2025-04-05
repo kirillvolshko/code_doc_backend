@@ -1,22 +1,18 @@
 import { Router } from "express";
 import {
-  addUserToOrganisation,
-  createOrganisation,
-  deleteOrganisation,
-  deleteUserFromOrganisation,
-  getOrganisationByUser,
-} from "../controller/organisation.controller.js";
+  addUserToProject,
+  createProject,
+  deleteProject,
+  deleteUserFromProject,
+  getProjectByUser,
+} from "../controller/project.controller.js";
 import authMiddleware from "../middlewares/auth-middleware.js";
 
 const routerOrg = new Router();
 
-routerOrg.get("/organisation-user/:id", authMiddleware, getOrganisationByUser);
-routerOrg.post("/organisation", authMiddleware, createOrganisation);
-routerOrg.delete("/organisation/:id", authMiddleware, deleteOrganisation);
-routerOrg.post("/organisation-user", authMiddleware, addUserToOrganisation);
-routerOrg.delete(
-  "/organisation-user",
-  authMiddleware,
-  deleteUserFromOrganisation
-);
+routerOrg.get("/project-user/:id", authMiddleware, getProjectByUser);
+routerOrg.post("/project", authMiddleware, createProject);
+routerOrg.delete("/project/:id", authMiddleware, deleteProject);
+routerOrg.post("/project-user", authMiddleware, addUserToProject);
+routerOrg.delete("/project-user", authMiddleware, deleteUserFromProject);
 export default routerOrg;

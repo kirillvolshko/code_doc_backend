@@ -20,7 +20,7 @@ export const createUserService = async (body) => {
 
   if (user) {
     throw ApiError.BadRequest(
-      "A user with email " + email + " already exists."
+      "A user with email " + email + " already exists.",
     );
   }
 

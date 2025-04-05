@@ -1,6 +1,6 @@
 import { EntitySchema } from "typeorm";
 import { User } from "./User.js";
-import { Organisation } from "./Organisation.js";
+import { Project } from "./Project.js";
 
 export const Document = new EntitySchema({
   name: "Document",
@@ -25,7 +25,7 @@ export const Document = new EntitySchema({
       type: "uuid",
       nullable: false,
     },
-    org_id: {
+    project_id: {
       type: "uuid",
       nullable: false,
     },
@@ -58,9 +58,9 @@ export const Document = new EntitySchema({
       onDelete: "CASCADE",
     },
     organisation: {
-      target: Organisation,
+      target: Project,
       type: "many-to-one",
-      joinColumn: { name: "org_id" },
+      joinColumn: { name: "project_id" },
       onDelete: "CASCADE",
     },
   },

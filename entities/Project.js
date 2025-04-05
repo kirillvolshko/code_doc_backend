@@ -1,18 +1,21 @@
 import { EntitySchema } from "typeorm";
 import { User } from "./User.js";
 
-export const Token = new EntitySchema({
-  name: "Token",
-  tableName: "token",
+export const Project = new EntitySchema({
+  name: "Project",
+  tableName: "project",
   columns: {
-    user_id: {
+    id: {
       type: "uuid",
       primary: true,
-      nullable: false,
+      generated: "uuid",
     },
-    refreshtoken: {
+    name: {
       type: "varchar",
       length: 255,
+    },
+    creator_id: {
+      type: "uuid",
       nullable: false,
     },
   },
@@ -20,7 +23,7 @@ export const Token = new EntitySchema({
     user: {
       target: User,
       type: "many-to-one",
-      joinColumn: { name: "user_id" },
+      joinColumn: { name: "creator_id" },
       onDelete: "CASCADE",
     },
   },

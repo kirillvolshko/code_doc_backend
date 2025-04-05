@@ -12,7 +12,7 @@ const routerUser = new Router();
 routerUser.post(
   "/registration",
   body("password").isLength({ min: 3, max: 32 }),
-  createUser
+  createUser,
 );
 routerUser.post("/login", loginUser);
 routerUser.post("/logout", logoutUser);

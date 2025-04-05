@@ -7,7 +7,7 @@ export const documentDto = (documentModel, user, editor) => {
       id: user.id,
       name: user.name,
     },
-    org_id: documentModel.org_id,
+    project_id: documentModel.project_id,
     created_at: documentModel.created_at,
     updated_at: documentModel.updated_at,
     editor: editor ? { id: editor.id, name: editor.name } : null,
