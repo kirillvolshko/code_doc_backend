@@ -2,12 +2,22 @@ import {
   getProjectByUserService,
   addUserToProjectService,
   createProjectService,
+  getProjectByIdService,
 } from "../services/project.service.js";
 
 export const getProjectByUser = async (req, res) => {
   try {
     const getProjectByUser = await getProjectByUserService(req.params.id);
     res.json(getProjectByUser);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+export const getProjectById = async (req, res) => {
+  try {
+    const getProjectById = await getProjectByIdService(req.params);
+    res.json(getProjectById);
   } catch (error) {
     res.status(500).json(error);
   }

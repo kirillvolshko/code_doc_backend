@@ -20,6 +20,14 @@ export const getProjectByUserService = async (id) => {
   return organisations;
 };
 
+export const getProjectByIdService = async (id) => {
+  const findProjectById = await projectRepository.findOneBy({ id: id });
+  if (!findProjectById) {
+    throw ApiError.BadRequest("Id project error");
+  }
+  return findProjectById;
+};
+
 export const addUserToProjectService = async (body) => {
   const { user_id, project_id } = body;
   const addUserToProject = userProjectRepository.create({
