@@ -18,5 +18,9 @@ routerProject.get("/project-users/:id", authMiddleware, getUsersByProject);
 routerProject.post("/project", authMiddleware, createProject);
 routerProject.delete("/project/:id", authMiddleware, deleteProject);
 routerProject.post("/project-user", authMiddleware, addUserToProject);
-routerProject.delete("/project-user", authMiddleware, deleteUserFromProject);
+routerProject.delete(
+  "/project-user/:id",
+  authMiddleware,
+  deleteUserFromProject,
+);
 export default routerProject;

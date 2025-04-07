@@ -56,10 +56,9 @@ export const addUserToProjectService = async (body) => {
   return addUserToProject;
 };
 
-export const deleteUserFromProjectService = async (body) => {
-  const { user_id } = body;
-  const deleteUserFromProject = await projectRepository.delete({
-    user_id: user_id,
+export const deleteUserFromProjectService = async (id) => {
+  const deleteUserFromProject = await userProjectRepository.delete({
+    user_id: id,
   });
 
   return deleteUserFromProject;

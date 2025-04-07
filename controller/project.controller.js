@@ -4,6 +4,7 @@ import {
   createProjectService,
   getProjectByIdService,
   getUsersByProjectService,
+  deleteUserFromProjectService,
 } from "../services/project.service.js";
 
 export const getProjectByUser = async (req, res, next) => {
@@ -44,7 +45,9 @@ export const addUserToProject = async (req, res, next) => {
 
 export const deleteUserFromProject = async (req, res, next) => {
   try {
-    const deleteUserFromProject = await deleteUserFromProject(req.body);
+    const deleteUserFromProject = await deleteUserFromProjectService(
+      req.params.id,
+    );
     if (deleteUserFromProject) res.status(200).json("Delete user success");
   } catch (error) {
     next(error);
