@@ -1,11 +1,14 @@
 import { AppDataSource } from "../config/data-source.js";
+import { creatorDto } from "../dtos/user-dto.js";
 import { Project } from "../entities/Project.js";
+import { User } from "../entities/User.js";
 import { UserProjects } from "../entities/UserProjects.js";
 import ApiError from "../exceptions/api-error.js";
 import { In } from "typeorm";
 
 const projectRepository = AppDataSource.getRepository(Project);
 const userProjectRepository = AppDataSource.getRepository(UserProjects);
+const userRepository = AppDataSource.getRepository(User);
 
 export const getProjectByUserService = async (id) => {
   const userOrgs = await userProjectRepository.findBy({ user_id: id });
@@ -20,19 +23,34 @@ export const getProjectByUserService = async (id) => {
   return organisations;
 };
 
+export const getUsersByProjectService = async (id) => {
+  const usersByProject = await userProjectRepository.findBy({ project_id: id });
+  const usersIds = usersByProject.map((user) => user.user_id);
+  const users = await userRepository.findBy({ id: In(usersIds) });
+  const userDtoInstance = users.map((user) => creatorDto(user));
+  return userDtoInstance;
+};
+
 export const getProjectByIdService = async (id) => {
-  const findProjectById = await projectRepository.findOneBy({ id: id });
+  const findProjectById = await projectRepository.findBy({ id: id });
+
   if (!findProjectById) {
     throw ApiError.BadRequest("Id project error");
   }
+
   return findProjectById;
 };
 
 export const addUserToProjectService = async (body) => {
-  const { user_id, project_id } = body;
+  const { email, project_id } = body;
+  const user = await userRepository.findOneBy({ email: email });
+  console.log(user);
+  if (!user) {
+    throw ApiError.BadRequest("No user found with this email");
+  }
   const addUserToProject = userProjectRepository.create({
     project_id: project_id,
-    user_id: user_id,
+    user_id: user.id,
   });
   await userProjectRepository.save(addUserToProject);
   return addUserToProject;

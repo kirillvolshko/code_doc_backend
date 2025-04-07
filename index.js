@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import routerUser from "./routes/user.routes.js";
-import routerOrg from "./routes/organisation.routes.js";
+import routerProject from "./routes/project.routes.js";
 import routerDoc from "./routes/documents.routes.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -24,7 +24,7 @@ app.use(
 );
 
 app.use("/api", routerUser);
-app.use("/api", routerOrg);
+app.use("/api", routerProject);
 app.use("/api", routerDoc);
 app.use("/api", routerComment);
 app.use(errorMiddleware);
