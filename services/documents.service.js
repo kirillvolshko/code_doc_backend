@@ -55,6 +55,7 @@ export const createDocumentService = async (body) => {
     creator_id: creator_id,
     project_id: project_id,
   });
+
   const saveDocument = documentRepository.save(createDocument);
   return saveDocument;
 };

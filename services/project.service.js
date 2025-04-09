@@ -60,7 +60,6 @@ export const deleteUserFromProjectService = async (id) => {
   const deleteUserFromProject = await userProjectRepository.delete({
     user_id: id,
   });
-
   return deleteUserFromProject;
 };
 

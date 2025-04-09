@@ -6,6 +6,7 @@ import { Project } from "../entities/Project.js";
 import { Document } from "../entities/Documents.js";
 import { UserProjects } from "../entities/UserProjects.js";
 import { Comment } from "../entities/Comments.js";
+import { Notification } from "../entities/Notification.js";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -14,7 +15,15 @@ export const AppDataSource = new DataSource({
   username: process.env.LOGIN,
   password: process.env.PASSWORD,
   database: "code_doc",
-  entities: [User, Token, Project, Document, UserProjects, Comment],
+  entities: [
+    User,
+    Token,
+    Project,
+    Document,
+    UserProjects,
+    Comment,
+    Notification,
+  ],
   synchronize: false,
   logging: true,
 });
