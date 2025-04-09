@@ -10,11 +10,15 @@ import { Notification } from "../entities/Notification.js";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
-  host: "localhost",
-  port: "5432",
-  username: process.env.LOGIN,
-  password: process.env.PASSWORD,
-  database: "code_doc",
+  // host: "localhost",
+  // port: "5432",
+  // username: process.env.LOGIN,
+  // password: process.env.PASSWORD,
+  // database: "code_doc",
+  url: process.env.POSTGRES_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
   entities: [
     User,
     Token,
