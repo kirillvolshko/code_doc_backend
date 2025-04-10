@@ -16,6 +16,15 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+app.options(
+  "*",
+  cors({
+    origin: "http://localhost:3000",
+    methods: "GET,POST,PUT,DELETE,PATCH",
+    allowedHeaders: "Content-Type,Authorization",
+    credentials: true,
+  }),
+);
 app.use(
   cors({
     origin: "http://localhost:3000",
