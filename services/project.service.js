@@ -1,11 +1,14 @@
 import { AppDataSource } from "../config/data-source.js";
 import { creatorDto } from "../dtos/user-dto.js";
+import { Project } from "../entities/Project.js";
+import { User } from "../entities/User.js";
+import { UserProjects } from "../entities/UserProjects.js";
 import ApiError from "../exceptions/api-error.js";
 import { In } from "typeorm";
 
-const projectRepository = AppDataSource.getRepository("Project");
-const userProjectRepository = AppDataSource.getRepository("UserProjects");
-const userRepository = AppDataSource.getRepository("User");
+const projectRepository = AppDataSource.getRepository(Project);
+const userProjectRepository = AppDataSource.getRepository(UserProjects);
+const userRepository = AppDataSource.getRepository(User);
 
 export const getProjectByUserService = async (id) => {
   const userOrgs = await userProjectRepository.findBy({ user_id: id });

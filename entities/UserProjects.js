@@ -3,7 +3,7 @@ import { Project } from "./Project.js";
 import { User } from "./User.js";
 
 export const UserProjects = new EntitySchema({
-  name: "UserProject",
+  name: "UserProjects",
   tableName: "user_projects",
   columns: {
     id: {
